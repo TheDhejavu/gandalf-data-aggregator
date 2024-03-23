@@ -17,7 +17,7 @@ const Login: React.FC = () => {
             </div>
             <div className="w-full my-4 space-y-2">
                 <div>
-                <a href="http://127.0.0.1:8080/auth/twitter"  target="_blank" className="bg-black text-white block hover:text-gray-400 text-black  hover:bg-gray-900 transition-colors rounded-md text-sm font-medium px-2 py-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                <a href={`${process.env.REACT_APP_SERVER_URL}/auth/twitter`}  target="_blank" className="bg-black text-white block hover:text-gray-400 text-black  hover:bg-gray-900 transition-colors rounded-md text-sm font-medium px-2 py-3 w-full focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
                     Sign in with X
                 </a>
                 </div>
