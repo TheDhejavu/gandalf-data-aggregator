@@ -185,7 +185,7 @@ func (s *Service) FetchAndDumpUserActivities(ctx context.Context, userID uuid.UU
 				})
 			}
 
-			date, err := time.Parse("01/02/2006", activity.Metadata.Date)
+			date, err := time.Parse("02/01/2006", activity.Metadata.Date)
 			if err != nil {
 				log.Error().Err(err).Msg("unable to parse date")
 			}
