@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, toggleModal }) => {
         const generateRedirectURL = async () => {
             try {
                 const storedToken = localStorage.getItem('token');
-                const response = await fetch('http://127.0.0.1:8080/user/generate-callback', {
+                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/generate-callback`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
