@@ -3,7 +3,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-    <div className="text-black dark:text-white h-screen flex flex-col justify-center items-center py-12 space-y-6 text-center md:space-y-5">
+    <div className="text-black h-screen flex flex-col justify-center items-center py-12 space-y-6 text-center md:space-y-5">
         <div className='bg-white p-20 border rounded-lg '>
             <div className="space-y-2 bg-0">
                 <div className="flex items-center justify-center space-x-4">
