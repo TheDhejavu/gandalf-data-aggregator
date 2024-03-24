@@ -84,7 +84,7 @@ const Auth: React.FC = () => {
       ) : (<> 
        <div className="h-screen flex flex-col items-center justify-center w-full">
         <div className="mx-auto text-center">
-            <p className="text-sm text-gray-700">
+            <p className="text-sm">
                 Wait while we connect your twitter accont...
             </p>
             <Loader />

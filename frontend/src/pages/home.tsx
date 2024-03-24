@@ -25,7 +25,6 @@ ChartJS.register(
     Legend
 );
 
-
 function formatDate(dateString: string) {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString('en-GB');
