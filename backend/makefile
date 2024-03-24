@@ -15,4 +15,4 @@ start:
 
 .PHONY: worker
 worker:
-	go run ./cmd/worker/worker.go
+	go run ./cmd/worker/main.go

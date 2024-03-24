@@ -147,6 +147,7 @@ func (s Service) RegisterUserDataKey(ctx context.Context, state string, key stri
 		UserID:  userID,
 		DataKey: key,
 	})
+
 	if err != nil {
 		log.Error().Err(err).Msg("EnqueueActivityDataResolver failed")
 	}
@@ -165,7 +166,6 @@ func (s *Service) GetUserByID(ctx context.Context, userID uuid.UUID) (*models.Us
 func (s *Service) FetchAndDumpUserActivities(ctx context.Context, userID uuid.UUID, dataKey string) error {
 	limit := 100
 	page := 1
-
 	for {
 		activityResponse, err := s.gandalfClient.QueryActivities(context.Background(), dataKey, limit, page)
 		if err != nil {

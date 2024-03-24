@@ -10,6 +10,7 @@ import (
 
 	"github.com/machinebox/graphql"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 )
 
 type GandalfClient struct {
@@ -90,6 +91,8 @@ func (g GandalfClient) QueryActivities(ctx context.Context, dataKey string, limi
 		Query:     req.Query(),
 		Variables: req.Vars(),
 	}
+
+	log.Info().Msgf("G_DataKey", dataKey)
 
 	var requestBody bytes.Buffer
 	if err := json.NewEncoder(&requestBody).Encode(requestBodyObj); err != nil {

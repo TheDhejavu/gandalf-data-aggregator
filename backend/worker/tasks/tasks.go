@@ -55,7 +55,6 @@ func (t WorkerTask) EnqueueActivityDataResolver(queuePayload QueuePayload) error
 	newTask := asynq.NewTask(
 		TypeActivityDataResolver,
 		payload,
-		asynq.Unique(1*time.Hour),
 		asynq.MaxRetry(2),
 		asynq.Retention(1*time.Hour),
 	)
