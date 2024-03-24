@@ -117,7 +117,7 @@ func (s Service) GenerateGandalfCallback(ctx context.Context, userID uuid.UUID) 
 	if err != nil {
 		return "", err
 	}
-	callbackURL := fmt.Sprintf("%s/gandalf/callback/netflix/%s?dataKey=aIfNaY2Nr3vcZSV/1zJW8d8U4ZJH/tz1jEtt4w0t4xo=", s.cfg.ServerURL, state)
+	callbackURL := fmt.Sprintf("%s/gandalf/callback/netflix", s.cfg.ServerURL, state)
 	return callbackURL, nil
 }
 
