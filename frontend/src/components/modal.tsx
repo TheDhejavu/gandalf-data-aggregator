@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, toggleModal }) => {
 
     useEffect(() => {
         const connect = new Connect({
-            publicKey: '0x02290a12d7ed02b3377e683d3285d6e4282662fc6f6d7496754d4d01e3085e6452',
+            publicKey: process.env.REACT_APP_GANDALF_PUBLIC_KEY as string,
             redirectURL: redirectURL, 
             services: { 'netflix': true }
         });
