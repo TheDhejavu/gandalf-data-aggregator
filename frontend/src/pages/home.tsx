@@ -101,7 +101,7 @@ const Home: React.FC= () => {
   
       setStartIndex((page - 1) * limit + 1);
       setActivityLoading(false)
-      
+
     } catch (error: any) {
       // showToast(error.message, { type: 'error' });
       toast(error.message, { type: 'error' });
@@ -231,7 +231,7 @@ return (
     
         <div className="p-10 border rounded-lg bg-white" hidden={isActivityLoading}>
           <h1 className="">Netflix Usage Analytics</h1>
-          {(stats ?
+          {(stats && Object.keys(stats.year_data).length > 0 ?
           <>
           <div>
             <label htmlFor="yearSelect">Select Year:</label>
