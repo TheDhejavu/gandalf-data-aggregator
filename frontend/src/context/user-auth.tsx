@@ -13,10 +13,17 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
+    setLoading(false);
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated }}>

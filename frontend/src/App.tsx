@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import Home from './pages/home';
 import Login from './pages/login';
@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated } = useAuth();
-
+  
   return (
     <Routes>
       <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
