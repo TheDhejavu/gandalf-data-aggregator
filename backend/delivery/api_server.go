@@ -134,6 +134,9 @@ func (s *Server) RegisterUserDataKey(c echo.Context) error {
 	)
 	if err != nil {
 		log.Error().Err(err).Msg("RegisterUserDataKey failed")
+	} else {
+		log.Info().Msg(c.Request().URL.String())
+		return c.Redirect(http.StatusFound, s.cfg.WebAppURL)
 	}
 
 	return c.JSON(http.StatusOK, nil)

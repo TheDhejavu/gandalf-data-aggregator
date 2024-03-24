@@ -12,6 +12,7 @@ type Config struct {
 	}
 
 	ServerURL string `env-required:"true" env:"SERVER_URL"`
+	WebAppURL string `env-required:"true" env:"WEB_APP_URL"`
 
 	JWTSecretKey string `env-required:"true" env:"JWT_SECRET_KEY"`
 
