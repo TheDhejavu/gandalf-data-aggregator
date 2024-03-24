@@ -3,6 +3,7 @@ import Pagination from '../components/pagination';
 import Modal from '../components/modal';
 import { Line } from 'react-chartjs-2';
 import { toast } from 'react-toastify';
+import Loader from '../components/loader';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -25,6 +26,7 @@ ChartJS.register(
     Legend
 );
 
+
 function formatDate(dateString: string) {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString('en-GB');
@@ -33,6 +35,7 @@ function formatDate(dateString: string) {
 
 const Home: React.FC= () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isActivityLoading, setActivityLoading] = useState(true);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
@@ -97,9 +100,12 @@ const Home: React.FC= () => {
       setSelectedYear(jsonResponse.stats.current_year);
   
       setStartIndex((page - 1) * limit + 1);
+      setActivityLoading(false)
+      
     } catch (error: any) {
       // showToast(error.message, { type: 'error' });
       toast(error.message, { type: 'error' });
+      setActivityLoading(false)
     }
   };
 
@@ -182,10 +188,11 @@ return (
             </div>
         </div>  
     </div>
-    {(responseActivityData.data && responseActivityData.data.length > 0 ?
       <div className="p-0 mt-4">
         <div className="grid w-full overflow-auto">
           <div className="relative w-full overflow-auto">
+          {(responseActivityData.data && responseActivityData.data.length > 0 ?
+           <>
             <table className="w-full caption-bottom text-sm">
                 <thead className="[&amp;_tr]:border-b">
                     <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -211,13 +218,21 @@ return (
                 ))}
                 </tbody>
             </table>
+           
             {responseActivityData.data && responseActivityData.data.length > 0 && (
                 <Pagination total={totalPages} limit={limit}  currentPage={currentPage} onPageChange={handlePageChange} />
             )}
+            </>
+            : 
+            <Placeholder.Placeholder loading={isActivityLoading} text="Sorry, there is no data to display." toggleModal={toggleModal}></Placeholder.Placeholder>
+        )}
           </div>
         </div>
-        <div className="p-10 border rounded-lg bg-white">
+    
+        <div className="p-10 border rounded-lg bg-white" hidden={isActivityLoading}>
           <h1 className="">Netflix Usage Analytics</h1>
+          {(stats ?
+          <>
           <div>
             <label htmlFor="yearSelect">Select Year:</label>
             <select id="yearSelect" onChange={(e) => updateChartData(e.target.value)} value={selectedYear}>
@@ -227,10 +242,11 @@ return (
             </select>
           </div>
           <Line data={data} options={options} />
+          </>
+          :  <Placeholder.AnalyticPlaceholder ></Placeholder.AnalyticPlaceholder> 
+        )}
         </div>
       </div>
-        : <Placeholder toggleModal={toggleModal}></Placeholder>
-      )}
     </div>
     <footer className="bottom-0 w-full py-4 text-center text-xs text-gray-600 dark:text-gray-400">
         © 2024 Data Aggregator. All rights reserved.
