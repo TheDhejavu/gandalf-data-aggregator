@@ -13,6 +13,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import Placeholder from '../components/placeholder';
 
 ChartJS.register(
     CategoryScale,
@@ -37,7 +38,6 @@ const Home: React.FC= () => {
 
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
   const [stats, setStats] = useState<{ year_data: Record<string, { Labels: number[], Months: string[] }>, current_year: string } | null>(null);
-
   const yearlyData = stats && stats.year_data[selectedYear] ? stats.year_data[selectedYear].Labels : [];
   const updateChartData = (year: string) => {
     setSelectedYear(year);
@@ -111,7 +111,10 @@ const Home: React.FC= () => {
     setCurrentPage(page);
   };
 
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<any>({
+    avatar_url: "https://as1.ftcdn.net/v2/jpg/05/16/27/58/1000_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
+    username: "loading....."
+  });
   useEffect(() => {
     const currentUser = async () => {
         try {
@@ -173,7 +176,7 @@ return (
                 </div>
             </div>
             <div className="absolute right-0 mr-4 flex justify-end">
-                <button onClick={toggleModal} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-black/70 transition-all px-4 py-2">
+                <button onClick={toggleModal}  style={{ borderRadius: '100px', }} className="inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-black text-white hover:bg-black/70 transition-all px-4 py-2">
                     Connect Netflix
                 </button>
             </div>
@@ -182,6 +185,7 @@ return (
         
     </div>
 
+    {(responseActivityData.data ?
       <div className="p-0 mt-4">
         <div className="grid w-full overflow-auto">
           <div className="relative w-full overflow-auto">
@@ -228,8 +232,10 @@ return (
           <Line data={data} options={options} />
         </div>
       </div>
+        : <Placeholder toggleModal={toggleModal}></Placeholder>
+      )}
     </div>
-    <footer className="bottom-0 w-full py-4 text-center text-sm text-gray-600 dark:text-gray-400">
+    <footer className="bottom-0 w-full py-4 text-center text-xs text-gray-600 dark:text-gray-400">
         © 2024 Data Aggregator. All rights reserved.
     </footer></>
   );
