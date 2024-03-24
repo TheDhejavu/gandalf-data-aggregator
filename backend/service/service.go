@@ -143,10 +143,13 @@ func (s Service) RegisterUserDataKey(ctx context.Context, state string, key stri
 		return err
 	}
 
-	_ = s.wt.EnqueueActivityDataResolver(workertask.QueuePayload{
+	err = s.wt.EnqueueActivityDataResolver(workertask.QueuePayload{
 		UserID:  userID,
 		DataKey: key,
 	})
+	if err != nil {
+		log.Error().Err(err).Msg("EnqueueActivityDataResolver failed")
+	}
 
 	return nil
 }
