@@ -15,7 +15,7 @@ services:
   - type: web
     name: data-aggregator
     env: docker
-    buildCommand: go build -tags netgo -ldflags '-s -w' -o server
+    buildCommand: go build -tags netgo -ldflags '-s -w' -o ./cmd/server/main
     startCommand: ./server
     plan: starter
     envVars:
@@ -32,8 +32,8 @@ services:
   - type: worker
     name: data-aggregator-worker
     env: docker
-    buildCommand: go build -tags netgo -ldflags '-s -w' -o ./worker/worker
-    startCommand: ./worker/worker
+    buildCommand: go build -tags netgo -ldflags '-s -w' -o ./cmd/worker/worker
+    startCommand: ./cmd/worker
     plan: starter
     envVars:
       - key: REDIS_URL

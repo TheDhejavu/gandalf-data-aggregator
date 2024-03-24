@@ -11,8 +11,8 @@ db-start: ## start the database server
 
 .PHONY: start
 start:
-	go run main.go
+	go run ./cmd/server/main.go
 
 .PHONY: worker
 worker:
-	go run ./worker/worker.go
+	go run ./cmd/worker/worker.go
