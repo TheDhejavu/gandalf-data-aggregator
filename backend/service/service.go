@@ -164,7 +164,7 @@ func (s *Service) GetUserByID(ctx context.Context, userID uuid.UUID) (*models.Us
 }
 
 func (s *Service) FetchAndDumpUserActivities(ctx context.Context, userID uuid.UUID, dataKey string) error {
-	limit := 1000
+	limit := 300
 	page := 1
 	for {
 		activityResponse, err := s.gandalfClient.QueryActivities(context.Background(), dataKey, limit, page)
