@@ -179,11 +179,8 @@ return (
                     Connect Netflix
                 </button>
             </div>
-        </div>
-        
-        
+        </div>  
     </div>
-
     {(responseActivityData.data && responseActivityData.data.length > 0 ?
       <div className="p-0 mt-4">
         <div className="grid w-full overflow-auto">
