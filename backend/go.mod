@@ -14,6 +14,7 @@ require (
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/machinebox/graphql v0.2.2
 	github.com/markbates/goth v1.79.0
+	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.32.0
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/gorm v1.25.8
@@ -39,7 +40,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mrjones/oauth v0.0.0-20180629183705-f4e24b6d100c // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/redis/go-redis/v9 v9.0.4 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect

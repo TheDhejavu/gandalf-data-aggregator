@@ -13,7 +13,6 @@ db-start: ## start the database server
 start:
 	go run main.go
 
-
 .PHONY: worker
 worker:
 	go run ./worker/worker.go

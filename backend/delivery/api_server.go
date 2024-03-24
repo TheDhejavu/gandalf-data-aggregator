@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rs/zerolog/log"
 )
 
 type ServerInterface interface {
@@ -125,12 +126,15 @@ func (s *Server) RegisterUserDataKey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Unable to register data key")
 	}
 
-	_ = s.service.RegisterUserDataKey(
+	err = s.service.RegisterUserDataKey(
 		c.Request().Context(),
 		c.Param("state"),
 		parsedURL.Query().Get("dataKey"),
 		c.Param("source"),
 	)
+	if err != nil {
+		log.Error().Err(err).Msg("RegisterUserDataKey failed")
+	}
 
 	return c.JSON(http.StatusOK, nil)
 }
