@@ -231,7 +231,7 @@ return (
     
         <div className="p-10 border rounded-lg bg-white" hidden={isActivityLoading}>
           <h1 className="">Netflix Usage Analytics</h1>
-          {(stats && Object.keys(stats.year_data).length > 8?
+          {(stats && Object.keys(stats.year_data).length > 0 ?
           <>
           <div>
             <label htmlFor="yearSelect">Select Year:</label>
