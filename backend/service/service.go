@@ -124,7 +124,7 @@ func (s Service) GenerateGandalfCallback(ctx context.Context, userID uuid.UUID) 
 func (s Service) RegisterUserDataKey(ctx context.Context, state string, key string, source string) error {
 	sessionUserID, err := s.sessionStore.GetSession(state)
 	if err != nil {
-		return nil
+		return fmt.Errorf("no active session for state: %s", state)
 	}
 
 	userID, err := uuid.Parse(sessionUserID)

@@ -74,6 +74,7 @@ const Home: React.FC= () => {
     try {
      
       const storedToken = localStorage.getItem('token');
+      console.log(storedToken)
       const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/activity?limit=${limit}&page=${page}`, {
         method: 'GET',
         headers: {
