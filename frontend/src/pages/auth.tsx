@@ -29,7 +29,7 @@ const Auth: React.FC = () => {
       const data = await response.json();
       localStorage.setItem('token', data.token);
 
-      navigate('/'); 
+      window.location.href = '/';
       toast(`Welcome ${data["username"]}, let's get you started!`, { type: 'success' }); 
     } catch (error: any) {
       navigate('/login'); 

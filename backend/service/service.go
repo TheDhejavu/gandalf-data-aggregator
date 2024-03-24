@@ -167,7 +167,9 @@ func (s *Service) FetchAndDumpUserActivities(ctx context.Context, userID uuid.UU
 	var limit int64 = 300
 	totalCount, _ := s.repo.GetTotalActivitiesByUser(ctx, userID)
 	var page int64
-	if totalCount%limit == 0 && totalCount > 0 {
+	if totalCount <= limit {
+		page = 1
+	} else if totalCount%limit == 0 {
 		page = (totalCount / limit)
 	} else {
 		page = (totalCount / limit) + 1
