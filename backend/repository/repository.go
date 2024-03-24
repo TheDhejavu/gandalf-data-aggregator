@@ -68,6 +68,18 @@ func (s *Postgres) GetUserByID(ctx context.Context, userID uuid.UUID) (*models.U
 	return user, nil
 }
 
+func (s *Postgres) GetTotalActivitiesByUser(ctx context.Context, userID uuid.UUID) (int64, error) {
+	var count int64
+	tx := s.Db.Model(models.Activity{}).
+		Where("user_id = ?", userID).
+		Count(&count)
+
+	if tx.Error != nil {
+		return 0, tx.Error
+	}
+	return count, nil
+}
+
 func (s *Postgres) CreateActivity(ctx context.Context, userID uuid.UUID, activity *models.Activity) (*models.Activity, error) {
 	tx := s.Db.Model(models.Activity{}).Where("subject = ? and user_id = ?", activity.Subject, userID).FirstOrCreate(&activity)
 	if tx.Error != nil {

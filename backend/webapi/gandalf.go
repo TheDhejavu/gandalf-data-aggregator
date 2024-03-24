@@ -50,7 +50,7 @@ type Identifier struct {
 	IdentifierType string `json:"identifierType"`
 }
 
-func (g GandalfClient) QueryActivities(ctx context.Context, dataKey string, limit int, page int) (*ActivityResponse[NetflixActivityMetadata], error) {
+func (g GandalfClient) QueryActivities(ctx context.Context, dataKey string, limit int64, page int64) (*ActivityResponse[NetflixActivityMetadata], error) {
 	privateKey, err := crypto.HexToECDSAPrivateKey(g.cfg.Gandalf.PrivateKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse private key: %v", err)
