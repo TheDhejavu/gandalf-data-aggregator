@@ -156,7 +156,7 @@ return (
                     <path d="M17 20.5C19.2091 20.5 21 18.7091 21 16.5C21 14.2909 19.2091 12.5 17 12.5C14.7909 12.5 13 14.2909 13 16.5C13 18.7091 14.7909 20.5 17 20.5Z" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
                 </div>
-                <h2 className="pt-3 text-xl">Data Aggregator</h2>
+                <h2 className="pt-3 text-lg sm:text-xl">Data Aggregator</h2>
             </div>
             <p className="text-xs pl-2 text-muted-foreground text-gray-500 dark:text-gray-400">
                 Welcome!, Let's see what you have been up to.
