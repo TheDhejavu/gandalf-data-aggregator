@@ -23,4 +23,5 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 frontend/.env
+frontend-v2/.env
 backend/.env

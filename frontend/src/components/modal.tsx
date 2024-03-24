@@ -1,5 +1,5 @@
 import Connect  from '@gandalf-network/connect';
-import { useToastMessage } from '../context/error-context';
+import { toast, ToastContainer } from 'react-toastify';
 import { useEffect, useState } from 'react';
 
 interface ModalProps {
@@ -11,29 +11,28 @@ const Modal: React.FC<ModalProps> = ({ isOpen, toggleModal }) => {
     const [redirectURL, setRedirectURL] = useState('');
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
     const [connectURL, setConnectURL] = useState<string>('');
-    const { showToast } = useToastMessage();
-
+   
     useEffect(() => {
         const generateRedirectURL = async () => {
             try {
-                const storedToken = localStorage.getItem('token');
-                const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/generate-callback`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${storedToken}` 
-                    },
-                });
+              const storedToken = localStorage.getItem('token');
+              const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/user/generate-callback`, {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${storedToken}` 
+                  },
+              });
         
-                if (!response.ok) {
-                    const errorMessage = await response.json();
-                    throw new Error(errorMessage["message"]);
-                }
+              if (!response.ok) {
+                const errorMessage = await response.json();
+                throw new Error(errorMessage["message"]);
+              }
         
-                const data = await response.json();
-                setRedirectURL(data.callbackURL);
+              const data = await response.json();
+              setRedirectURL(data.callbackURL);
             } catch (error: any) {
-                showToast(error.message, { type: 'error' });
+              toast(error.message, { type: 'error' });
             }
         };
         

@@ -1,8 +1,8 @@
 import React, { useState , useEffect } from 'react';
-import { useToastMessage } from '../context/error-context';
 import Pagination from '../components/pagination';
 import Modal from '../components/modal';
 import { Line } from 'react-chartjs-2';
+import { toast } from 'react-toastify';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -23,6 +23,7 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+
 
 function formatDate(dateString: string) {
     const date = new Date(dateString);
@@ -63,7 +64,6 @@ const Home: React.FC= () => {
     },
   };
 
-  const { showToast } = useToastMessage();
   const [responseActivityData, setResponseActivityData] = useState<any>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -98,7 +98,8 @@ const Home: React.FC= () => {
   
       setStartIndex((page - 1) * limit + 1);
     } catch (error: any) {
-      showToast(error.message, { type: 'error' });
+      // showToast(error.message, { type: 'error' });
+      toast(error.message, { type: 'error' });
     }
   };
 
@@ -129,10 +130,10 @@ const Home: React.FC= () => {
             }
     
             const data = await response.json();
-            console.log(data)
+           
             setUser(data)
         } catch (error: any) {
-            showToast(error.message, { type: 'error' });
+          toast(error.message, { type: 'error' });
         }
     };
     

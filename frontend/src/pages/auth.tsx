@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToastMessage } from '../context/error-context';
+import { toast } from 'react-toastify';
 
 const Loader: React.FC = () => {
   return (
@@ -39,7 +39,7 @@ const Loader: React.FC = () => {
 const Auth: React.FC = () => {
   const [responseData, setResponseData] = useState<any>(null);
   const authURL = window.location.href; 
-  const { showToast } = useToastMessage();
+ 
   const navigate = useNavigate();
 
   const completeAuth = async () => {
@@ -63,10 +63,10 @@ const Auth: React.FC = () => {
       localStorage.setItem('token', data.token);
 
       navigate('/'); 
-      showToast(`Welcome ${data["username"]}, let's get you started!`, { type: 'success' }); 
+      toast(`Welcome ${data["username"]}, let's get you started!`, { type: 'success' }); 
     } catch (error: any) {
-        navigate('/login'); 
-        showToast(error.message, { type: 'error' });
+      navigate('/login'); 
+      toast(error.message, { type: 'error' });
     }
   };
 
