@@ -92,7 +92,7 @@ func (g GandalfClient) QueryActivities(ctx context.Context, dataKey string, limi
 		Variables: req.Vars(),
 	}
 
-	log.Info().Msgf("G_DataKey", dataKey)
+	log.Info().Msgf("G_DataKey %s", dataKey)
 
 	var requestBody bytes.Buffer
 	if err := json.NewEncoder(&requestBody).Encode(requestBodyObj); err != nil {
