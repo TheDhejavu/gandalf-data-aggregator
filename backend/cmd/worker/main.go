@@ -7,7 +7,7 @@ import (
 	"gandalf-data-aggregator/repository"
 	"gandalf-data-aggregator/service"
 	"gandalf-data-aggregator/store"
-	"gandalf-data-aggregator/webapi"
+	"gandalf-data-aggregator/webapi/eyeofsauron"
 	"gandalf-data-aggregator/worker/handler"
 	workertask "gandalf-data-aggregator/worker/tasks"
 	"gandalf-data-aggregator/workerqueue"
@@ -36,7 +36,11 @@ func main() {
 	}
 
 	workerTask := workertask.NewWorkerTask(cfg)
-	service := service.NewService(cfg, repository.NewPostgres(db), webapi.NewGandalfClient(cfg), store.NewSessionStore(), workerTask, nil)
+	eyeOfSauron, err := eyeofsauron.NewEyeOfSauron(cfg.Gandalf.PrivateKey)
+	if err != nil {
+		log.Fatal().Err(err).Msg("unable to instiate eye of sauron")
+	}
+	service := service.NewService(cfg, repository.NewPostgres(db), eyeOfSauron, store.NewSessionStore(), workerTask, nil)
 
 	srv := workerqueue.NewAsyncqServer(cfg)
 

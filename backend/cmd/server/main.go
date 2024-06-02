@@ -10,7 +10,7 @@ import (
 	"gandalf-data-aggregator/repository"
 	"gandalf-data-aggregator/service"
 	"gandalf-data-aggregator/store"
-	"gandalf-data-aggregator/webapi"
+	"gandalf-data-aggregator/webapi/eyeofsauron"
 	workertask "gandalf-data-aggregator/worker/tasks"
 
 	"github.com/ilyakaznacheev/cleanenv"
@@ -41,8 +41,12 @@ func main() {
 		log.Fatal().Err(err).Msg("unable to initialize jwt maker")
 	}
 	workerTask := workertask.NewWorkerTask(cfg)
+	eyeOfSauron, err := eyeofsauron.NewEyeOfSauron(cfg.Gandalf.PrivateKey)
+	if err != nil {
+		log.Fatal().Err(err).Msg("unable to instiate eye of sauron")
+	}
 
-	service := service.NewService(cfg, repository.NewPostgres(db), webapi.NewGandalfClient(cfg), store.NewSessionStore(), workerTask, jwtMaker)
+	service := service.NewService(cfg, repository.NewPostgres(db), eyeOfSauron, store.NewSessionStore(), workerTask, jwtMaker)
 
 	router := echo.New()
 

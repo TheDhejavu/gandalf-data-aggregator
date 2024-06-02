@@ -8,12 +8,13 @@ import (
 	token "gandalf-data-aggregator/pkg/jwt"
 	"gandalf-data-aggregator/repository"
 	"gandalf-data-aggregator/store"
-	"gandalf-data-aggregator/webapi"
+	"gandalf-data-aggregator/webapi/eyeofsauron"
 	workertask "gandalf-data-aggregator/worker/tasks"
 	"net/url"
 	"strconv"
 	"time"
 
+	"github.com/gandalf-network/gandalf-sdk-go/eyeofsauron/graphqlTypes"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 
@@ -23,14 +24,14 @@ import (
 type Service struct {
 	twitterProvider *twitter.Provider
 	repo            *repository.Postgres
-	gandalfClient   *webapi.GandalfClient
+	gandalfClient   *eyeofsauron.EyeOfSauron
 	sessionStore    *store.SessionStore
 	jwtMaker        token.Maker
 	wt              workertask.WorkerTask
 	cfg             config.Config
 }
 
-func NewService(cfg config.Config, repo *repository.Postgres, gandalClient *webapi.GandalfClient, sessionStore *store.SessionStore, workertask workertask.WorkerTask, jwtMaker token.Maker) *Service {
+func NewService(cfg config.Config, repo *repository.Postgres, gandalClient *eyeofsauron.EyeOfSauron, sessionStore *store.SessionStore, workertask workertask.WorkerTask, jwtMaker token.Maker) *Service {
 	return &Service{
 		twitterProvider: twitter.New(cfg.Twitter.Key, cfg.Twitter.Secret, cfg.Twitter.Callback),
 		repo:            repo,
@@ -176,38 +177,47 @@ func (s *Service) FetchAndDumpUserActivities(ctx context.Context, userID uuid.UU
 	}
 
 	for {
-		activityResponse, err := s.gandalfClient.QueryActivities(context.Background(), dataKey, limit, page)
+		activityResponse, err := s.gandalfClient.GetActivity(context.Background(), dataKey, eyeofsauron.SourceNetflix, graphqlTypes.Int64(limit), graphqlTypes.Int64(page))
 		if err != nil {
 			log.Error().Err(err).Msg("QueryActivities on gandalf failed.")
 			return err
 		}
 
-		if len(activityResponse.Data) == 0 {
+		if len(activityResponse.GetActivity.Data) == 0 {
 			break
 		}
 
 		var activities []*models.Activity
-		for _, activity := range activityResponse.Data {
+		for _, activity := range activityResponse.GetActivity.Data {
 			var identifiers []models.Identifier
 
-			for _, identifier := range activity.Metadata.Subject {
-				identifiers = append(identifiers, models.Identifier{
-					Value:          identifier.Value,
-					IdentifierType: identifier.IdentifierType,
-				})
-			}
+			metadata := activity.GetMetadata()
 
-			date, err := time.Parse("02/01/2006", activity.Metadata.Date)
-			if err != nil {
-				log.Error().Err(err).Msg("unable to parse date")
+			switch meta := metadata.(type) {
+			case *eyeofsauron.GetActivityActivityResponseDataActivityMetadataNetflixActivityMetadata:
+				for _, identifier := range meta.Subject {
+					identifiers = append(identifiers, models.Identifier{
+						Value:          identifier.Value,
+						IdentifierType: string(identifier.IdentifierType),
+					})
+				}
+
+				date, err := time.Parse("01/02/2006", string(meta.Date))
+				if err != nil {
+					log.Error().Err(err).Msg("Unable to parse date")
+					continue
+				}
+
+				activities = append(activities, &models.Activity{
+					UserID:             userID,
+					ProviderActivityID: activity.Id,
+					Title:              meta.Title,
+					Date:               date,
+					Subject:            identifiers,
+				})
+			default:
+				continue
 			}
-			activities = append(activities, &models.Activity{
-				UserID:             userID,
-				ProviderActivityID: activity.ID,
-				Title:              activity.Metadata.Title,
-				Date:               date,
-				Subject:            identifiers,
-			})
 		}
 
 		if _, err := s.repo.CreateActivities(ctx, activities); err != nil {
